@@ -1,0 +1,39 @@
+<p>Your Session code is: {{code}}</p>
+<pre>Accuracy:  {{accuracy}}
+Latitude:  {{latitude}}
+Longitude: {{longitude}}
+Updates:   {{updateCount}}
+Data:      {{Math.round((dataUsage/1024)*100)/100}} KB
+</pre>
+<div id='wrapper'>
+    High Accuracy mode
+    <br>
+    <span style="font-size: 8pt">Uses GPS for better accuracy, but may drain battery faster</span>
+    <br>
+    <switch id="highAccuracy" name="highAccuracy" ng-init="highAccuracy=true" ng-model="highAccuracy" class="green"></switch>
+    <br> Auto Center
+    <br>
+    <span style="font-size: 8pt">Auto center your location on the map</span>
+    <br>
+    <switch id="autoCenter" name="autoCenter" ng-init="autoCenter=false" ng-model="autoCenter" class="green"></switch>
+    <br> Update Rate
+    <br>
+    <span style="font-size: 8pt">Frequency of location update. May drain battery faster and use up more data</span>
+    <br>
+    <div style="width: 250px">
+        <rzslider rz-slider-model="updateRate.value" rz-slider-options="updateRate.options"></rzslider>
+    </div>
+    <br>
+    <br>
+    <ui-gmap-google-map center='map.center' zoom='map.zoom' id='map'>
+        <ui-gmap-marker coords="markers.coords" idKey="markers.idKey"></ui-gmap-marker>
+        <ui-gmap-circle center="map.circle.center" radius="map.circle.radius" fill="map.circle.fill" stroke="map.circle.stroke">
+        </ui-gmap-circle>
+        <!--<ui-gmap-polyline path="map.path"
+                      geodesic="true"
+                      strokeColor="#FF0000"
+                      strokeOpacity="1.0"
+                      strokeWeight: "2">
+    </ui-gmap-polyline>-->
+    </ui-gmap-google-map>
+</div>

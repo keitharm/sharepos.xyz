@@ -1,0 +1,30 @@
+{
+  "name": "sharepos",
+  "version": "0.0.0",
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.9",
+    "angular-route": "~1.4.9",
+    "jquery": "~2.2.0",
+    "socket.io-client": "~1.4.4",
+    "angular-cookies": "~1.4.9",
+    "angular-google-maps": "~2.3.0",
+    "angular-ui-switch": "~0.1.1",
+    "angularjs-slider": "~2.5.0"
+  },
+  "resolutions": {
+    "lodash": "3.X"
+  }
+}

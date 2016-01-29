@@ -1,0 +1,38 @@
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 10px;
+  font-family: 'helvetica neue', helvetica, sans-serif;
+}
+
+a {
+  color: #333;
+  font-size: 14px;
+}
+a.button {
+  text-decoration: none;
+  background-color: #419BF9;
+  padding: 8px;
+  color: #fff;
+  cursor: pointer;
+}
+
+a:hover {
+  background: rgb(151, 202, 255);
+}
+
+a.minor {
+    background-color: #eee;
+    color: #333;
+}
+
+a.minor:hover {
+  background-color: #fff;
+}
+
+.angular-google-map-container { height: 350px; }

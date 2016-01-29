@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html ng-app='sharepos'>
+
+<head>
+    <meta name="viewport" content="initial-scale=1">
+    <meta charset="utf-8" />
+    <title>SharePos</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="lib/angular-ui-switch/angular-ui-switch.min.css" />
+    <link rel="stylesheet" type="text/css" href="lib/angularjs-slider/dist/rzslider.min.css" />
+</head>
+
+<body>
+    <div class="container">
+        <a href="/#/" ng-click="disconnect()"><h1>Sharepos</h1></a>
+
+        <div ng-view></div>
+
+        <script src="lib/angular/angular.js"></script>
+        <script src="lib/angular-route/angular-route.js"></script>
+        <script src="lib/angular-cookies/angular-cookies.js"></script>
+        <script src="lib/socket.io-client/socket.io.js"></script>
+        <script src="lib/jquery/dist/jquery.min.js"></script>
+        <script src="lib/angular-ui-switch/angular-ui-switch.min.js"></script>
+        <script src="lib/angularjs-slider/dist/rzslider.min.js"></script>
+
+        <script src='lib/lodash/lodash.min.js'></script>
+        <script src='lib/angular-simple-logger/dist/angular-simple-logger.min.js'></script>
+        <script src='lib/angular-google-maps/dist/angular-google-maps.min.js'></script>
+
+        <script src="app/index/index.js"></script>
+        <script src="app/services/services.js"></script>
+        <script src="app/joinSession/joinSession.js"></script>
+
+        <script src="app/app.js"></script>
+    </div>
+</body>
+
+</html>
