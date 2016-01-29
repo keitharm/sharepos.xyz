@@ -1,6 +1,6 @@
 angular.module('sharepos.index', [])
 
-.controller('IndexController', function ($scope, $location, $http, $cookies) {
+.controller('IndexController', function ($scope, $location, $cookies) {
   navigator.geolocation.getCurrentPosition(function(blah) {} );
   var code = $cookies.get('code');
   if (code !== undefined) {
@@ -17,9 +17,7 @@ angular.module('sharepos.index', [])
     $cookies.put('guid', guid);
     $cookies.put('code', code);
 
-    $http.post('/newSession', {code: code}).then(function() {
-      $location.path("/joinSession/" + code);
-    });
+    $location.path("/joinSession/" + code);
   };
 
   $scope.enterCode = function (gameCode) {

@@ -1,7 +1,6 @@
 var express = require('express');
 var app     = express();
 var server  = require('http').createServer(app);
-var db      = require('./models/db');
 
 var path         = require('path');
 var favicon      = require('serve-favicon');
@@ -9,7 +8,6 @@ var logger       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 
-var routes  = require('./routes/index');
 var session = require('express-session');
 var io      = require('socket.io')(server);
 
@@ -27,8 +25,6 @@ app.use(session({
     saveUninitialized: true
 }));
 
-app.use('/', routes);
-
 server.listen(1337, function() {
     console.log("Listening on: " + 1337);
 });
@@ -40,15 +36,36 @@ io.use(function(socket, next) {
     next();
 });
 
+locs = {};
+
 io.on('connection', function(socket) {
+
+    // Put user in room
+    socket.on('joinRoom', function(data) {
+        // Save the user's guid and code on the user's socket
+        socket.guid = data.guid;
+        socket.code = data.code;
+
+        socket.join(data.code);  // Join the room with code
+    });
 
     //Update players location
     socket.on('locationUpdate', function(data) {
-        console.log(data);
+        // Create/update user's location
+        if (locs[data.code] === undefined) {
+            locs[data.code] = {};
+        }
+        locs[data.code][data.guid] = data.locData;
+
+        // Send socket all of the locations of users in this room
+        socket.emit('locationUpdate', locs[data.code]);
     });
 
-    socket.on('disconnect', function() {
-        console.log(socket.ip + " has disconnected");
+    socket.on('disconnect', function(data) {
+        if (socket !== undefined && (socket.code in locs)) {
+            delete locs[socket.code][socket.guid]; // Delete the user's location from the room
+            socket.disconnect(true);
+        }
     });
 });
 

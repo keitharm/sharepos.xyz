@@ -1,19 +1,22 @@
 angular.module('sharepos.joinSession', [])
 
-.controller('JoinSessionController', function($scope, $route, $location, $http, $cookies, Socket, uiGmapGoogleMapApi) {
+.controller('JoinSessionController', function($scope, $route, $location, $cookies, $interval, Socket, uiGmapGoogleMapApi) {
     var code = $route.current.params.code;
-    $http({
-        method: "GET",
-        url: "/validCode/" + code
-    }).then(function(response) {
-        if (response.data === "no bueno") {
-            $location.path('/');
-        };
+    $scope.code = code;
+
+    guid = $cookies.get('guid');
+    $scope.guid = guid;
+
+    Socket.emit('joinRoom', {code: code, guid: guid});
+
+    Socket.on('locationUpdate', function(data) {
+        //console.log(data);
     });
+
 
     $scope.$on("$destroy", function() {
         Socket.disconnect();
-        clearInterval($scope.locLoop);
+        $interval.cancel($scope.locLoop);
     });
     $scope.Math = window.Math;
     $scope.accuracy = 0;
@@ -26,7 +29,7 @@ angular.module('sharepos.joinSession', [])
         value: 3,
         options: {
             onChange: function() {
-                clearInterval($scope.locLoop);
+                $interval.cancel($scope.locLoop);
                 if ($scope.updateRate.value) {
                     startLocLoop();
                 }
@@ -34,12 +37,6 @@ angular.module('sharepos.joinSession', [])
             stepsArray: ["Off", 1, 2, 3, 4, 5, 10, 15, 30, 45, 60]
         }
     };
-
-    code = $cookies.get('code');
-    $scope.code = code;
-
-    guid = $cookies.get('guid');
-    $scope.guid = guid;
 
     getLoc(function() {
         uiGmapGoogleMapApi.then(function(maps) {
@@ -97,7 +94,7 @@ angular.module('sharepos.joinSession', [])
             $scope.longitude = data.coords.longitude;
             $scope.updateCount++;
             $scope.dataUsage += JSON.stringify(payload).length;
-            $http.post('/updatePos', payload);
+            Socket.emit('locationUpdate', payload);
             cb();
         }, function error(err) {
             console.warn('ERROR(' + err.code + '): ' + err.message);
@@ -109,7 +106,7 @@ angular.module('sharepos.joinSession', [])
     }
 
     function startLocLoop() {
-        $scope.locLoop = setInterval(function() {
+        $scope.locLoop = $interval(function() {
             getLoc(function() {
                 $scope.markers = {
                     idKey: 1,
@@ -145,6 +142,7 @@ angular.module('sharepos.joinSession', [])
                     };
                 }
             });
+
         }, $scope.updateRate.value * 1000);
     }
 });

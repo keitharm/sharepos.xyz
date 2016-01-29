@@ -16,8 +16,8 @@ angular.module('sharepos.services', [])
     };
 
     var disconnect = function() {
-        emit("disconnect", true);
-        console.log("blah");
+        socket.emit("disconnect", true, function() {
+        });
     };
 
     return {
