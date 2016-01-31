@@ -35,4 +35,10 @@ a.minor:hover {
   background-color: #fff;
 }
 
+.label {
+  color: blue;
+  font-size: 18px;
+  text-align: center;
+}
+
 .angular-google-map-container { height: 350px; }

@@ -55,7 +55,14 @@ io.on('connection', function(socket) {
         if (locs[data.code] === undefined) {
             locs[data.code] = {};
         }
-        locs[data.code][data.guid] = data.locData;
+        locs[data.code][data.guid] = {
+            accuracy: data.locData[0],
+            latitude: data.locData[1],
+            longitude: data.locData[2],
+            time: data.locData[3],
+            name: data.locData[4]
+        }
+        console.log(locs);
 
         // Send socket all of the locations of users in this room
         socket.emit('locationUpdate', locs[data.code]);

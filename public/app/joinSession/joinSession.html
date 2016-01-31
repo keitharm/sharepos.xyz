@@ -1,9 +1,11 @@
 <p>Your Session code is: <b>{{::code}}</b></p>
+ID: <input ng-model="name" ng-change="updateName()" type="text">
 <pre>Accuracy:  {{accuracy}}
 Latitude:  {{latitude}}
 Longitude: {{longitude}}
 Updates:   {{updateCount}}
 Data:      {{Math.round((dataUsage/1024)*100)/100}} KB
+Clients:   {{totalClients}}
 </pre>
 <div id='wrapper'>
     High Accuracy mode
@@ -26,7 +28,9 @@ Data:      {{Math.round((dataUsage/1024)*100)/100}} KB
     <br>
     <br>
     <ui-gmap-google-map center='map.center' zoom='map.zoom' id='map'>
-        <ui-gmap-marker coords="markers.coords" idKey="markers.idKey"></ui-gmap-marker>
+        <ui-gmap-markers models="clients" coords="'self'" idkey="'id'" icon="'markerIcon'">
+          <!--<ui-gmap-marker coords="markers.coords" idKey="markers.idKey" options="{labelContent: name, labelClass: 'label'}"></ui-gmap-marker>-->
+        </ui-gmap-markers>
         <ui-gmap-circle center="map.circle.center" radius="map.circle.radius" fill="map.circle.fill" stroke="map.circle.stroke">
         </ui-gmap-circle>
         <!--<ui-gmap-polyline path="map.path"

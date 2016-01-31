@@ -3,21 +3,36 @@ angular.module('sharepos.joinSession', [])
 .controller('JoinSessionController', function($scope, $route, $location, $cookies, $interval, Socket, uiGmapGoogleMapApi) {
     var code = $route.current.params.code;
     $scope.code = code;
+    $scope.clients = [];
+    $scope.guid = $cookies.get('guid');
+    $scope.name = $scope.guid; // Default name to guid
 
-    guid = $cookies.get('guid');
-    $scope.guid = guid;
-
-    Socket.emit('joinRoom', {code: code, guid: guid});
+    Socket.emit('joinRoom', {code: code, guid: $scope.guid});
 
     Socket.on('locationUpdate', function(data) {
-        //console.log(data);
-    });
+        var newItems = [];
 
+        for (item in data) {
+          newItems.push({
+            latitude: data[item].latitude,
+            longitude: data[item].longitude,
+            id: data[item].time
+          })
+        };
+
+        $scope.clients = newItems;
+        $scope.totalClients = Object.keys(data).length;
+    });
 
     $scope.$on("$destroy", function() {
         Socket.disconnect();
         $interval.cancel($scope.locLoop);
     });
+
+    $scope.updateGuid = function() {
+        console.log($scope.guid);
+    };
+    
     $scope.Math = window.Math;
     $scope.accuracy = 0;
     $scope.latitude = 0;
@@ -84,9 +99,10 @@ angular.module('sharepos.joinSession', [])
     function getLoc(cb) {
         navigator.geolocation.getCurrentPosition(function(data) {
             var payload = {
-                guid: guid,
+                guid: $scope.guid,
+                name: $scope.name,
                 code: code,
-                locData: [data.coords.accuracy, data.coords.latitude, data.coords.longitude, new Date().getTime()]
+                locData: [data.coords.accuracy, data.coords.latitude, data.coords.longitude, new Date().getTime(), $scope.name]
             };
             $scope.data = [data.coords.accuracy, data.coords.latitude, data.coords.longitude, new Date().getTime()];
             $scope.accuracy = data.coords.accuracy;
