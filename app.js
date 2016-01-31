@@ -7,9 +7,13 @@ var favicon      = require('serve-favicon');
 var logger       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
+var compress     = require('compression');
 
 var session = require('express-session');
 var io      = require('socket.io')(server);
+
+// gzip compression
+app.use(compress());
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
