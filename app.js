@@ -8,9 +8,10 @@ var logger       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var compress     = require('compression');
-
 var session = require('express-session');
 var io      = require('socket.io')(server);
+
+var routes  = require('./routes');
 
 // gzip compression
 app.use(compress());
@@ -28,6 +29,8 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
+
+app.use(routes);
 
 server.listen(1337, function() {
     console.log("Listening on: " + 1337);
