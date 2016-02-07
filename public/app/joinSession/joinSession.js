@@ -41,7 +41,7 @@ angular.module('sharepos.joinSession', [])
     $scope.dataUsage = 0;
 
     $scope.updateRate = {
-        value: 3,
+        value: 1,
         options: {
             onChange: function() {
                 $interval.cancel($scope.locLoop);
